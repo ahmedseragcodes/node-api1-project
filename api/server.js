@@ -63,5 +63,24 @@ server.post("/api/users", (req, res)=>{
     })
 })
 
+//[PUT] Update User
+
+server.put("/api/users/:id", (req, res)=>{
+
+    const { id }=req.params;
+    const changes = req.body;
+
+    User.update(id, changes)
+    .then((updatedUser)=>{
+        console.log(updatedUser);
+        res.status(201).json(updatedUser);
+    })
+    .catch((err)=>{
+        res.status(500).json({message: err.message})
+    })
+
+
+})
+
 
 module.exports = server; // EXPORT YOUR SERVER instead of {}
