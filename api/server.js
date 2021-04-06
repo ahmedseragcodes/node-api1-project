@@ -46,5 +46,22 @@ server.get("/api/users/:id", (req, res)=>{
 
 // [POST] New User
 
+server.post("/api/users", (req, res)=>{
+    const newUser = req.body;
+
+    User.insert(newUser)
+    .then((addedUser)=>{
+        if(!addedUser.name || !addedUser.bio){
+            res.status(404).json({message: "Name & Bio are required"});
+        } else {
+            console.log("SUCCEEDED POSTING ADDED USER", addedUser);
+            res.status(201).json(addedUser);
+        }
+    })
+    .catch((err)=>{
+        res.status(500).json({message: err.message});
+    })
+})
+
 
 module.exports = server; // EXPORT YOUR SERVER instead of {}
