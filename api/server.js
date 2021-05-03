@@ -63,9 +63,33 @@ server.post("/api/users", (req, res, next)=>{
     } else {
         res.status(400).json({message: "Please provide name and bio for the user"});
     }
-})
+});
 
 //[PUT] / Update User
+
+server.put("/api/users/:id", (req, res, next)=>{
+
+    const { id } = req.params;
+    const changes = req.body;
+
+    if(Users.findById(id)){
+        if(changes.name && changes.bio){
+            Users.update(id, changes)
+            .then((updatedUser)=>{
+                res.status(201).json(updatedUser);
+            })
+            .catch((err)=>{
+                res.status(500).json({message: "The user information could not be modified"});
+            })
+        } else {
+            res.status(400).json({message: "Please provide name and bio for the user"});
+        }
+    } else {
+        res.status(404).json({message: "The user with the specified ID does not exist"});
+    }
+
+});
+   
 
 //[DELETE] User By Id
 
