@@ -67,12 +67,14 @@ server.post("/api/users", (req, res, next)=>{
 
 //[PUT] / Update User
 
-server.put("/api/users/:id", (req, res, next)=>{
+server.put("/api/users/:id", async(req, res, next)=>{
 
     const { id } = req.params;
     const changes = req.body;
 
-    if(Users.findById(id)){
+    const UserId = await Users.findById(id);
+
+    if(UserId){
         if(changes.name && changes.bio){
             Users.update(id, changes)
             .then((updatedUser)=>{
