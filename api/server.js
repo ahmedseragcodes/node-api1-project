@@ -93,4 +93,22 @@ server.put("/api/users/:id", (req, res, next)=>{
 
 //[DELETE] User By Id
 
+server.delete("/api/users/:id", (req, res, next)=>{
+
+    const { id } = req.params;
+
+    if(Users.findById(id)){
+        Users.remove(id)
+        .then((deletedUser)=>{
+            res.status(200).json(deletedUser);
+        })
+        .then((err)=>{
+            res.status(500).json({message: "The user could not be removed"});
+        })
+    } else {
+        res.status(404).json({message: "The user with the specified ID does not exist"});
+    }
+
+})
+
 module.exports = server;
